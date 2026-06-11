@@ -1,0 +1,38 @@
+export const users = [
+  {
+    id: 1,
+    name: "Sajal Mondal",
+    username: "sajal",
+    profileImage: require("../assets/images/user/user_1.png"),
+    coverImage: require("../assets/images/user/user_cover_1.jpeg"),
+    followers: 1500,
+    following: 500,
+  },
+  {
+    id: 2,
+    name: "Rahim Ahmed",
+    username: "rahim",
+    profileImage: require("../assets/images/user/user_2.jpg"),
+    coverImage: require("../assets/images/user/user_cover_2.jpg"),
+    followers: 800,
+    following: 300,
+  },
+  {
+    id: 3,
+    name: "Karim Hasan",
+    username: "karim",
+    profileImage: require("../assets/images/user/user_3.jpg"),
+    coverImage: require("../assets/images/user/user_cover_3.jpg"),
+    followers: 1200,
+    following: 400,
+  },
+  {
+    id: 4,
+    name: "Farhana Prity",
+    username: "farhana",
+    profileImage: require("../assets/images/user/user_4.jpg"),
+    coverImage: require("../assets/images/user/user_cover_4.jpg"),
+    followers: 14200,
+    following: 402,
+  },
+];

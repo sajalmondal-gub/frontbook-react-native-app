@@ -1,5 +1,5 @@
 import { StatusBar, useColorScheme, View, Text, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import './global.css';
+import '../global.css';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function App() {
