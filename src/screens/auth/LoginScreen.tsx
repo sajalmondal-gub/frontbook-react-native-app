@@ -1,4 +1,4 @@
-import { View, TextInput, Button } from "react-native";
+import { View, TextInput, Button, Image } from "react-native";
 import { useContext, useState } from "react";
 import { login as loginService } from "../../services/authService";
 import { AuthContext } from "../../hooks/useAuth";
@@ -22,13 +22,21 @@ export default function LoginScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1">
-            <LinearGradient
-                colors={['#ea580c', '#7e22ce', '#ffffff', '#0284c7']}
-                locations={[0, 0.4, 0.65, 1]}
-                start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
-                className="flex-1 justify-center px-6"
-            >
+        <LinearGradient
+            colors={['#ff5d053d', '#7e22ce5b', '#ffffff4b', '#03a6f74e']}
+            locations={[0, 0.4, 0.65, 1]}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }}
+            className="justify-center px-6"
+        >
+            <SafeAreaView className="flex-1 justify-center">
+                <View className="h-15 w-15 justify-center items-center">
+                    <Image
+                        source={require("../../assets/images/logo.png")}
+                        className="object-contain"
+                    />
+
+                </View>
+
                 <TextInput
                     placeholder="Username"
                     onChangeText={setUsername}
@@ -40,7 +48,8 @@ export default function LoginScreen() {
                 />
 
                 <Button title="Login" onPress={handleLogin} />
-            </LinearGradient>
-        </SafeAreaView>
+
+            </SafeAreaView>
+        </LinearGradient>
     );
 }
