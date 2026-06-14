@@ -35,10 +35,22 @@ export default function LoginScreen() {
         >
             <SafeAreaView className="flex-1">
                 <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                    // FIXED: Changed behavior settings for proper cross-platform layout management
+                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     className="flex-1"
+                    keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
                 >
-                    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} showsVerticalScrollIndicator={false} className="px-8 py-10" keyboardShouldPersistTaps="handled">
+                    {/* FIXED: Removed Tailwind className constraints from ScrollView and shifted padding here */}
+                    <ScrollView
+                        contentContainerStyle={{
+                            flexGrow: 1,
+                            justifyContent: 'center',
+                            paddingHorizontal: 32, // Equivalent to px-8
+                            paddingVertical: 40    // Equivalent to py-10
+                        }}
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handled"
+                    >
                         <View className="items-center mb-10">
                             <Image
                                 source={require("../../assets/images/logo.png")}
