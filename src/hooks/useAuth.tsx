@@ -12,9 +12,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const init = async () => {
-        const currentUser = await getCurrentUser();
-        setUser(currentUser);
-        setLoading(false);
+        try {
+            const currentUser = await getCurrentUser();
+            setUser(currentUser);
+        } catch (error) {
+            console.log("Failed to initialize auth:", error);
+            setUser(null);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const login = (userData: any) => {

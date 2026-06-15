@@ -32,7 +32,15 @@ export const logout = async () => {
 };
 
 export const getCurrentUser = async () => {
-    const credentials = await Keychain.getGenericPassword();
-    if (!credentials) return null;
-    return JSON.parse(credentials.password);
+    try {
+        const credentials = await Keychain.getGenericPassword();
+        if (!credentials) return null;
+        
+        // Match credentials with user array
+        const user = users.find(u => u.username === credentials.username && u.password === credentials.password);
+        return user || null;
+    } catch (error) {
+        console.log("Error getting user from keychain:", error);
+        return null;
+    }
 };
