@@ -1,5 +1,6 @@
 import { View, Text, StatusBar } from "react-native";
 import HomeHeader from "../components/HomeHeader";
+import CreatePost from "../components/CreatePost";
 import LinearGradient from 'react-native-linear-gradient';
 
 export default function HomeScreen() {
@@ -12,6 +13,7 @@ export default function HomeScreen() {
         >
             <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
             <HomeHeader />
+            <CreatePost />
             <View className="flex-1 items-center justify-center">
                 <Text className="text-lg font-semibold text-slate-700">HomeScreen Feed Content Here</Text>
             </View>
