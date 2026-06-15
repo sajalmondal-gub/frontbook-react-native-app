@@ -1,4 +1,5 @@
-import { View, TextInput, Text, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { View, TextInput, Text, TouchableOpacity, Image, Platform } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useContext, useState } from "react";
 import { login as loginService } from "../../services/authService";
 import { AuthContext } from "../../hooks/useAuth";
@@ -34,24 +35,19 @@ export default function LoginScreen() {
             style={{ flex: 1 }}
         >
             <SafeAreaView className="flex-1">
-                <KeyboardAvoidingView
-                    // FIXED: Changed behavior settings for proper cross-platform layout management
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    className="flex-1"
-                    keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+                <KeyboardAwareScrollView
+                    contentContainerStyle={{
+                        flexGrow: 1,
+                        justifyContent: 'center',
+                        paddingHorizontal: 32, // Equivalent to px-8
+                        paddingVertical: 40    // Equivalent to py-10
+                    }}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    enableOnAndroid={true}
+                    extraScrollHeight={Platform.OS === 'android' ? 20 : 0}
                 >
-                    {/* FIXED: Removed Tailwind className constraints from ScrollView and shifted padding here */}
-                    <ScrollView
-                        contentContainerStyle={{
-                            flexGrow: 1,
-                            justifyContent: 'center',
-                            paddingHorizontal: 32, // Equivalent to px-8
-                            paddingVertical: 40    // Equivalent to py-10
-                        }}
-                        showsVerticalScrollIndicator={false}
-                        keyboardShouldPersistTaps="handled"
-                    >
-                        <View className="items-center mb-10">
+                    <View className="items-center mb-10">
                             <Image
                                 source={require("../../assets/images/logo.png")}
                                 className="w-24 h-24 mb-6 rounded-3xl"
@@ -135,8 +131,7 @@ export default function LoginScreen() {
                                 <Text className="text-primary-500 font-bold text-sm">Sign Up</Text>
                             </TouchableOpacity>
                         </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
+                    </KeyboardAwareScrollView>
             </SafeAreaView>
         </LinearGradient>
     );

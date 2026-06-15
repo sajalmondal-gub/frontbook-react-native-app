@@ -1,4 +1,5 @@
-import { View, TextInput, Text, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
+import { View, TextInput, Text, TouchableOpacity, Image, Platform } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useContext, useState } from "react";
 import { register as registerService } from "../../services/authService";
 import { AuthContext } from "../../hooks/useAuth";
@@ -37,12 +38,15 @@ export default function RegisterScreen() {
             style={{ flex: 1 }}
         >
             <SafeAreaView className="flex-1">
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-                    className="flex-1"
+                <KeyboardAwareScrollView
+                    contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+                    showsVerticalScrollIndicator={false}
+                    className="px-8 py-10"
+                    keyboardShouldPersistTaps="handled"
+                    enableOnAndroid={true}
+                    extraScrollHeight={Platform.OS === 'android' ? 20 : 0}
                 >
-                    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} showsVerticalScrollIndicator={false} className="px-8 py-10" keyboardShouldPersistTaps="handled">
-                        <View className="items-center mb-10">
+                    <View className="items-center mb-10">
                             <Image
                                 source={require("../../assets/images/logo.png")}
                                 className="w-24 h-24 mb-6 rounded-3xl"
@@ -148,8 +152,7 @@ export default function RegisterScreen() {
                                 <Text className="text-primary-500 font-bold text-sm">Log In</Text>
                             </TouchableOpacity>
                         </View>
-                    </ScrollView>
-                </KeyboardAvoidingView>
+                    </KeyboardAwareScrollView>
             </SafeAreaView>
         </LinearGradient>
     );
