@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ScrollView, Dimensions, StatusBar } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, Dimensions, StatusBar, Modal, FlatList, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -10,7 +10,7 @@ import PostCard from '../components/PostCard';
 import { posts } from '../data/posts';
 import { dummyPhotos, dummyReels, dummyAbout } from '../data/profileData';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default function ProfileScreen() {
     const navigation = useNavigation();
@@ -19,6 +19,8 @@ export default function ProfileScreen() {
     
     const [activeTab, setActiveTab] = useState('Posts');
     const tabs = ['Posts', 'Photos', 'Reels', 'About'];
+    const [isPhotoViewerVisible, setIsPhotoViewerVisible] = useState(false);
+    const [initialPhotoIndex, setInitialPhotoIndex] = useState(0);
 
     const handleImageSelect = async (type: 'profile' | 'cover') => {
         try {
@@ -173,9 +175,18 @@ export default function ProfileScreen() {
                             </View>
                             <View className="flex-row flex-wrap -mx-1">
                                 {dummyPhotos.map((photo, index) => (
-                                    <View key={index} style={{ width: '33.33%' }} className="p-1 aspect-square">
+                                    <TouchableOpacity 
+                                        key={index} 
+                                        style={{ width: '33.33%' }} 
+                                        className="p-1 aspect-square"
+                                        activeOpacity={0.8}
+                                        onPress={() => {
+                                            setInitialPhotoIndex(index);
+                                            setIsPhotoViewerVisible(true);
+                                        }}
+                                    >
                                         <Image source={{ uri: photo }} className="w-full h-full rounded-xl" resizeMode="cover" />
-                                    </View>
+                                    </TouchableOpacity>
                                 ))}
                             </View>
                         </View>
@@ -273,6 +284,40 @@ export default function ProfileScreen() {
                     )}
                 </View>
             </ScrollView>
+
+            {/* Fullscreen Photo Viewer */}
+            <Modal visible={isPhotoViewerVisible} transparent={true} animationType="fade">
+                <View className="flex-1 bg-black">
+                    <SafeAreaView className="flex-1">
+                        <View className="flex-row justify-end p-4 z-10 absolute top-10 right-0">
+                            <TouchableOpacity 
+                                onPress={() => setIsPhotoViewerVisible(false)}
+                                className="w-10 h-10 bg-white/20 rounded-full items-center justify-center"
+                            >
+                                <Icon name="x" size={24} color="#fff" />
+                            </TouchableOpacity>
+                        </View>
+                        <FlatList
+                            data={dummyPhotos}
+                            keyExtractor={(item, index) => index.toString()}
+                            horizontal
+                            pagingEnabled
+                            showsHorizontalScrollIndicator={false}
+                            initialScrollIndex={initialPhotoIndex}
+                            getItemLayout={(data, index) => ({
+                                length: width,
+                                offset: width * index,
+                                index,
+                            })}
+                            renderItem={({ item }) => (
+                                <View style={{ width, height: height }} className="justify-center items-center pb-20">
+                                    <Image source={{ uri: item }} style={{ width: '100%', height: '80%' }} resizeMode="contain" />
+                                </View>
+                            )}
+                        />
+                    </SafeAreaView>
+                </View>
+            </Modal>
         </LinearGradient>
     );
 }
