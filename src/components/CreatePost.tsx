@@ -4,9 +4,11 @@ import Icon from 'react-native-vector-icons/Feather';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useAuth } from '../hooks/useAuth';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CreatePost() {
     const { user } = useAuth();
+    const navigation = useNavigation();
 
     const handleImageSelect = async () => {
         try {
@@ -32,11 +34,13 @@ export default function CreatePost() {
     return (
         <View className="px-4 py-3 flex-row items-center border-b border-gray-200/40">
             {/* User Profile Image */}
-            <Image
-                source={user?.profileImage || require('../assets/images/logo.png')}
-                className="w-9 h-9 rounded-full border border-gray-100 shadow-sm"
-                resizeMode="cover"
-            />
+            <TouchableOpacity onPress={() => navigation.navigate('Profile' as never)} activeOpacity={0.8}>
+                <Image
+                    source={user?.profileImage || require('../assets/images/logo.png')}
+                    className="w-9 h-9 rounded-full border border-gray-100 shadow-sm"
+                    resizeMode="cover"
+                />
+            </TouchableOpacity>
 
             {/* "What's on your mind?" Input Mock */}
             <TouchableOpacity
