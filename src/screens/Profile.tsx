@@ -6,6 +6,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../hooks/useAuth';
 import { launchImageLibrary } from 'react-native-image-picker';
 import LinearGradient from 'react-native-linear-gradient';
+import PostCard from '../components/PostCard';
+import { posts } from '../data/posts';
+import { dummyPhotos, dummyReels, dummyAbout } from '../data/profileData';
 
 const { width } = Dimensions.get('window');
 
@@ -145,10 +148,129 @@ export default function ProfileScreen() {
                 </View>
 
                 {/* Content Section based on Tab */}
-                <View className="mt-2 bg-white p-4 min-h-[300px]">
-                    <Text className="text-gray-500 text-center mt-10">
-                        {activeTab} content will appear here
-                    </Text>
+                <View className="mt-2 min-h-[300px] pb-10">
+                    {activeTab === 'Posts' && (
+                        <View>
+                            {posts.filter(p => p.userId === user?.id).length > 0 ? (
+                                posts.filter(p => p.userId === user?.id).map((post) => (
+                                    <PostCard key={post.id} post={post} />
+                                ))
+                            ) : (
+                                <View className="bg-white p-6 items-center justify-center mt-2">
+                                    <Text className="text-gray-500 font-medium">No posts available</Text>
+                                </View>
+                            )}
+                        </View>
+                    )}
+
+                    {activeTab === 'Photos' && (
+                        <View className="bg-white mt-1 p-4 rounded-b-2xl shadow-sm">
+                            <View className="flex-row justify-between items-center mb-3">
+                                <Text className="text-gray-900 text-xl font-extrabold tracking-tight">Photos</Text>
+                                <TouchableOpacity>
+                                    <Text className="text-[#f97316] font-semibold">See All</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View className="flex-row flex-wrap -mx-1">
+                                {dummyPhotos.map((photo, index) => (
+                                    <View key={index} style={{ width: '33.33%' }} className="p-1 aspect-square">
+                                        <Image source={{ uri: photo }} className="w-full h-full rounded-xl" resizeMode="cover" />
+                                    </View>
+                                ))}
+                            </View>
+                        </View>
+                    )}
+
+                    {activeTab === 'Reels' && (
+                        <View className="bg-white mt-1 p-4 rounded-b-2xl shadow-sm">
+                            <View className="flex-row justify-between items-center mb-3">
+                                <Text className="text-gray-900 text-xl font-extrabold tracking-tight">Reels</Text>
+                                <TouchableOpacity>
+                                    <Text className="text-[#f97316] font-semibold">See All</Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View className="flex-row flex-wrap -mx-1">
+                                {dummyReels.map((reel) => (
+                                    <View key={reel.id} style={{ width: '33.33%' }} className="p-1 aspect-[9/16]">
+                                        <View className="w-full h-full relative rounded-xl overflow-hidden">
+                                            <Image source={{ uri: reel.thumbnail }} className="w-full h-full" resizeMode="cover" />
+                                            {/* Gradient Overlay for Text Readability */}
+                                            <LinearGradient
+                                                colors={['transparent', 'rgba(0,0,0,0.6)']}
+                                                className="absolute bottom-0 left-0 right-0 h-1/2 justify-end p-2"
+                                            >
+                                                <View className="flex-row items-center gap-x-1.5">
+                                                    <Icon name="play" size={14} color="#fff" />
+                                                    <Text className="text-white text-xs font-bold tracking-wider">{reel.views}</Text>
+                                                </View>
+                                            </LinearGradient>
+                                        </View>
+                                    </View>
+                                ))}
+                            </View>
+                        </View>
+                    )}
+
+                    {activeTab === 'About' && (
+                        <View className="bg-white mt-1 p-5 rounded-b-2xl shadow-sm">
+                            <Text className="text-gray-900 text-xl font-extrabold tracking-tight mb-5">About</Text>
+                            
+                            <View className="flex-row items-start mb-6">
+                                <View className="w-10 h-10 rounded-full bg-orange-100 items-center justify-center mt-1">
+                                    <Icon name="user" size={20} color="#f97316" />
+                                </View>
+                                <View className="ml-4 flex-1 border-b border-gray-100 pb-4">
+                                    <Text className="text-gray-800 text-[15px] leading-6 font-medium">
+                                        {dummyAbout.bio}
+                                    </Text>
+                                </View>
+                            </View>
+                            
+                            <View className="flex-row items-center mb-6">
+                                <View className="w-10 h-10 rounded-full bg-purple-100 items-center justify-center">
+                                    <Icon name="briefcase" size={20} color="#a855f7" />
+                                </View>
+                                <View className="ml-4 flex-1 border-b border-gray-100 pb-4">
+                                    <Text className="text-gray-800 text-[15px] font-medium">
+                                        {dummyAbout.work}
+                                    </Text>
+                                </View>
+                            </View>
+                            
+                            <View className="flex-row items-center mb-6">
+                                <View className="w-10 h-10 rounded-full bg-blue-100 items-center justify-center">
+                                    <Icon name="book" size={20} color="#3b82f6" />
+                                </View>
+                                <View className="ml-4 flex-1 border-b border-gray-100 pb-4">
+                                    <Text className="text-gray-800 text-[15px] font-medium">
+                                        {dummyAbout.education}
+                                    </Text>
+                                </View>
+                            </View>
+                            
+                            <View className="flex-row items-center mb-6">
+                                <View className="w-10 h-10 rounded-full bg-green-100 items-center justify-center">
+                                    <Icon name="map-pin" size={20} color="#22c55e" />
+                                </View>
+                                <View className="ml-4 flex-1 border-b border-gray-100 pb-4">
+                                    <Text className="text-gray-800 text-[15px] font-medium">
+                                        {dummyAbout.location}
+                                    </Text>
+                                </View>
+                            </View>
+
+                            <View className="flex-row items-center mb-2">
+                                <View className="w-10 h-10 rounded-full bg-gray-100 items-center justify-center">
+                                    <Icon name="clock" size={20} color="#6b7280" />
+                                </View>
+                                <View className="ml-4 flex-1">
+                                    <Text className="text-gray-800 text-[15px] font-medium">
+                                        {dummyAbout.joined}
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    )}
                 </View>
             </ScrollView>
         </LinearGradient>
