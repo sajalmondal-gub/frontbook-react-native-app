@@ -21,6 +21,8 @@ export default function ProfileScreen() {
     const tabs = ['Posts', 'Photos', 'Reels', 'About'];
     const [isPhotoViewerVisible, setIsPhotoViewerVisible] = useState(false);
     const [initialPhotoIndex, setInitialPhotoIndex] = useState(0);
+    const [isReelViewerVisible, setIsReelViewerVisible] = useState(false);
+    const [initialReelIndex, setInitialReelIndex] = useState(0);
 
     const handleImageSelect = async (type: 'profile' | 'cover') => {
         try {
@@ -201,8 +203,17 @@ export default function ProfileScreen() {
                                 </TouchableOpacity>
                             </View>
                             <View className="flex-row flex-wrap -mx-1">
-                                {dummyReels.map((reel) => (
-                                    <View key={reel.id} style={{ width: '33.33%' }} className="p-1 aspect-[9/16]">
+                                {dummyReels.map((reel, index) => (
+                                    <TouchableOpacity 
+                                        key={reel.id} 
+                                        style={{ width: '33.33%' }} 
+                                        className="p-1 aspect-[9/16]"
+                                        activeOpacity={0.8}
+                                        onPress={() => {
+                                            setInitialReelIndex(index);
+                                            setIsReelViewerVisible(true);
+                                        }}
+                                    >
                                         <View className="w-full h-full relative rounded-xl overflow-hidden">
                                             <Image source={{ uri: reel.thumbnail }} className="w-full h-full" resizeMode="cover" />
                                             {/* Gradient Overlay for Text Readability */}
@@ -216,7 +227,7 @@ export default function ProfileScreen() {
                                                 </View>
                                             </LinearGradient>
                                         </View>
-                                    </View>
+                                    </TouchableOpacity>
                                 ))}
                             </View>
                         </View>
@@ -286,36 +297,121 @@ export default function ProfileScreen() {
             </ScrollView>
 
             {/* Fullscreen Photo Viewer */}
-            <Modal visible={isPhotoViewerVisible} transparent={true} animationType="fade">
-                <View className="flex-1 bg-black">
-                    <SafeAreaView className="flex-1">
-                        <View className="flex-row justify-end p-4 z-10 absolute top-10 right-0">
-                            <TouchableOpacity 
-                                onPress={() => setIsPhotoViewerVisible(false)}
-                                className="w-10 h-10 bg-white/20 rounded-full items-center justify-center"
-                            >
-                                <Icon name="x" size={24} color="#fff" />
-                            </TouchableOpacity>
-                        </View>
-                        <FlatList
-                            data={dummyPhotos}
-                            keyExtractor={(item, index) => index.toString()}
-                            horizontal
-                            pagingEnabled
-                            showsHorizontalScrollIndicator={false}
-                            initialScrollIndex={initialPhotoIndex}
-                            getItemLayout={(data, index) => ({
-                                length: width,
-                                offset: width * index,
-                                index,
-                            })}
-                            renderItem={({ item }) => (
-                                <View style={{ width, height: height }} className="justify-center items-center pb-20">
-                                    <Image source={{ uri: item }} style={{ width: '100%', height: '80%' }} resizeMode="contain" />
+            <Modal 
+                visible={isPhotoViewerVisible} 
+                transparent={true} 
+                animationType="fade"
+                onRequestClose={() => setIsPhotoViewerVisible(false)}
+            >
+                <View style={{ flex: 1, backgroundColor: '#000000' }}>
+                    <View style={{ position: 'absolute', top: 50, right: 20, zIndex: 100 }}>
+                        <TouchableOpacity 
+                            onPress={() => setIsPhotoViewerVisible(false)}
+                            className="w-12 h-12 bg-white/20 rounded-full items-center justify-center border border-white/30"
+                            activeOpacity={0.6}
+                        >
+                            <Icon name="x" size={28} color="#ffffff" />
+                        </TouchableOpacity>
+                    </View>
+                    <FlatList
+                        data={dummyPhotos}
+                        keyExtractor={(item, index) => index.toString()}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        initialScrollIndex={initialPhotoIndex}
+                        getItemLayout={(data, index) => ({
+                            length: width,
+                            offset: width * index,
+                            index,
+                        })}
+                        renderItem={({ item }) => (
+                            <View style={{ width, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image source={{ uri: item }} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
+                            </View>
+                        )}
+                    />
+                </View>
+            </Modal>
+
+            {/* Fullscreen Reel Viewer */}
+            <Modal 
+                visible={isReelViewerVisible} 
+                transparent={true} 
+                animationType="slide"
+                onRequestClose={() => setIsReelViewerVisible(false)}
+            >
+                <View style={{ flex: 1, backgroundColor: '#000000' }}>
+                    <View style={{ position: 'absolute', top: 50, right: 20, zIndex: 100 }}>
+                        <TouchableOpacity 
+                            onPress={() => setIsReelViewerVisible(false)}
+                            className="w-12 h-12 bg-white/20 rounded-full items-center justify-center border border-white/30"
+                            activeOpacity={0.6}
+                        >
+                            <Icon name="x" size={28} color="#ffffff" />
+                        </TouchableOpacity>
+                    </View>
+                    <FlatList
+                        data={dummyReels}
+                        keyExtractor={(item) => item.id.toString()}
+                        pagingEnabled
+                        showsVerticalScrollIndicator={false}
+                        initialScrollIndex={initialReelIndex}
+                        getItemLayout={(data, index) => ({
+                            length: height,
+                            offset: height * index,
+                            index,
+                        })}
+                        renderItem={({ item }) => (
+                            <View style={{ width, height: height, backgroundColor: '#000' }}>
+                                <Image source={{ uri: item.thumbnail }} style={{ width: '100%', height: '100%' }} resizeMode="cover" />
+                                
+                                <LinearGradient
+                                    colors={['transparent', 'rgba(0,0,0,0.7)']}
+                                    style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%' }}
+                                />
+
+                                {/* Play Icon Overlay */}
+                                <View style={{ position: 'absolute', top: '45%', left: '40%', opacity: 0.8 }}>
+                                    <Icon name="play-circle" size={80} color="#ffffff" />
                                 </View>
-                            )}
-                        />
-                    </SafeAreaView>
+
+                                {/* Right Actions */}
+                                <View style={{ position: 'absolute', bottom: 100, right: 16, alignItems: 'center', gap: 24 }}>
+                                    <TouchableOpacity className="items-center">
+                                        <Icon name="heart" size={32} color="#fff" />
+                                        <Text className="text-white text-xs font-bold mt-1">12K</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity className="items-center">
+                                        <Icon name="message-circle" size={32} color="#fff" />
+                                        <Text className="text-white text-xs font-bold mt-1">345</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity className="items-center">
+                                        <Icon name="send" size={32} color="#fff" />
+                                        <Text className="text-white text-xs font-bold mt-1">Share</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                                {/* Bottom Info */}
+                                <View style={{ position: 'absolute', bottom: 40, left: 16, right: 80 }}>
+                                    <View className="flex-row items-center mb-3">
+                                        <Image source={user?.profileImage || require('../assets/images/logo.png')} className="w-10 h-10 rounded-full border border-white" />
+                                        <Text className="text-white font-bold ml-3 text-base">@{user?.username || 'username'}</Text>
+                                        <TouchableOpacity className="ml-4 border border-white px-3 py-1 rounded-full">
+                                            <Text className="text-white font-bold text-xs">Follow</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <Text className="text-white text-sm" numberOfLines={2}>
+                                        Watching my awesome reel! #reactnative #frontbook 🚀🔥
+                                    </Text>
+                                    <View className="flex-row items-center mt-3">
+                                        <Icon name="music" size={14} color="#fff" />
+                                        <Text className="text-white ml-2 text-xs">Original Audio</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        )}
+                    />
                 </View>
             </Modal>
         </LinearGradient>
