@@ -3,12 +3,10 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import DropdownMenu, { DropdownOption } from './DropdownMenu';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useDrawer } from '../contexts/DrawerContext';
 
 export default function HomeHeader() {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const insets = useSafeAreaInsets();
-    const { openDrawer } = useDrawer();
 
     const menuOptions: DropdownOption[] = [
         { id: 'post', label: 'Post', icon: 'edit-2', onPress: () => console.log('Post clicked') },
@@ -19,11 +17,8 @@ export default function HomeHeader() {
 
     return (
         <View className="flex-row justify-between items-center px-4 py-3 bg-transparent" style={{ paddingTop: insets.top ? insets.top + 10 : 12 }}>
-            {/* Left Side: Menu & Logo */}
-            <View className="flex-row items-center gap-x-3">
-                <TouchableOpacity onPress={openDrawer} activeOpacity={0.7}>
-                    <Icon name="menu" size={28} color="#1f2937" />
-                </TouchableOpacity>
+            {/* Left Side: Logo */}
+            <View>
                 <Image
                     source={require('../assets/images/logo.png')}
                     className="w-10 h-10 rounded-xl"
