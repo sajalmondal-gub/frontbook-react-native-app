@@ -16,7 +16,7 @@ export default function NotificationsScreen() {
       switch (item.type) {
         case 'like': return { name: 'heart', color: '#f97316' }; // Orange
         case 'comment': return { name: 'message-circle', color: '#a855f7' }; // Purple
-        case 'friend_request': return { name: 'user-plus', color: '#3b82f6' }; // Keep friend requests distinct blue or use theme
+        case 'friend_request': return { name: 'user', color: '#f97316' }; // Orange
         case 'mention': return { name: 'at-sign', color: '#a855f7' }; // Purple
         case 'group': return { name: 'users', color: '#f97316' }; // Orange
         case 'birthday': return { name: 'gift', color: '#f97316' }; // Orange
@@ -50,12 +50,29 @@ export default function NotificationsScreen() {
             {item.target && <Text className="font-bold"> {item.target}</Text>}
           </Text>
           <Text className="text-gray-500 text-[13px] mt-1 font-medium">{item.timeAgo}</Text>
+
+          {/* Friend Request Actions */}
+          {item.type === 'friend_request' && (
+            <View className="flex-row mt-2.5 pr-4">
+              <TouchableOpacity className="flex-1 bg-[#f97316] py-1.5 rounded-md items-center mr-2">
+                <Text className="text-white font-semibold text-[14px]">Confirm</Text>
+              </TouchableOpacity>
+              <TouchableOpacity className="flex-1 bg-gray-200 py-1.5 rounded-md items-center">
+                <Text className="text-gray-800 font-semibold text-[14px]">Delete</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
 
-        {/* More Options */}
-        <TouchableOpacity className="ml-3 mt-1 p-1">
-          <Icon name="more-horizontal" size={24} color="#4b5563" />
-        </TouchableOpacity>
+        {/* More Options & Unread Dot */}
+        <View className="ml-2 items-center justify-between py-1">
+          <TouchableOpacity className="p-1">
+            <Icon name="more-horizontal" size={24} color="#4b5563" />
+          </TouchableOpacity>
+          {item.isUnread && (
+            <View className="w-3 h-3 rounded-full bg-[#f97316] mb-2" />
+          )}
+        </View>
       </TouchableOpacity>
     );
   };
