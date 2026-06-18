@@ -47,7 +47,7 @@ export default function ProfileScreen() {
             end={{ x: 1, y: 1 }}
             style={{ flex: 1 }}
         >
-            <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
+            <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
             
             <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
                 {/* Cover Photo Section */}

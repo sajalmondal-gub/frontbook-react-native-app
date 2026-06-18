@@ -58,7 +58,7 @@ export default function FriendsScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f3f4f6' }}>
-      <StatusBar barStyle="dark-content" backgroundColor="#f3f4f6" translucent={true} />
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={true} />
       
       {/* Top Header */}
       <View style={{ paddingTop: insets.top ? insets.top + 10 : 12 }} className="bg-[#f3f4f6] px-4 pb-2 flex-row items-center justify-between">
