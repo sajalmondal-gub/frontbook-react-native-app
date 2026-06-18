@@ -14,7 +14,7 @@ const ReelItem = ({ item, isActive }: { item: Reel, isActive: boolean }) => {
   const [isPaused, setIsPaused] = useState(false);
 
   return (
-    <View style={{ height: WINDOW_HEIGHT, width: WINDOW_WIDTH, backgroundColor: '#000' }}>
+    <View style={{ height: WINDOW_HEIGHT, width: WINDOW_WIDTH, backgroundColor: '#f3f4f6' }}>
       {/* Video Player */}
       <TouchableOpacity 
         activeOpacity={1} 
@@ -126,7 +126,7 @@ export default function ReelsScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'black' }}>
+    <View style={{ flex: 1, backgroundColor: '#f3f4f6' }}>
       <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true} />
       <FlatList
         data={reelsData}
