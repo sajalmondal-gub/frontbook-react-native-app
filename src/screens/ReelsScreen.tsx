@@ -5,11 +5,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import Video from 'react-native-video';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { reelsData, Reel } from '../data/reels';
+import { useDrawer } from '../contexts/DrawerContext';
 
 const { height: WINDOW_HEIGHT, width: WINDOW_WIDTH } = Dimensions.get('window');
 
 const ReelItem = ({ item, isActive }: { item: Reel, isActive: boolean }) => {
   const insets = useSafeAreaInsets();
+  const { openDrawer } = useDrawer();
   const [isLiked, setIsLiked] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
@@ -49,7 +51,7 @@ const ReelItem = ({ item, isActive }: { item: Reel, isActive: boolean }) => {
       <View style={{ position: 'absolute', top: insets.top + 10, left: 0, right: 0, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 16 }}>
         {/* Left: Menu & Title */}
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <TouchableOpacity style={{ marginRight: 16 }}>
+          <TouchableOpacity style={{ marginRight: 16 }} onPress={openDrawer}>
             <Icon name="menu" size={26} color="white" />
           </TouchableOpacity>
           <Text className="text-white text-xl font-bold">Reels</Text>

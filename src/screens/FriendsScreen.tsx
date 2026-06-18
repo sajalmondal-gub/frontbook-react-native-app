@@ -3,9 +3,11 @@ import { View, Text, ScrollView, Image, TouchableOpacity, StatusBar } from 'reac
 import Icon from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { friendRequests, friendSuggestions, FriendInfo } from '../data/friends';
+import { useDrawer } from '../contexts/DrawerContext';
 
 export default function FriendsScreen() {
   const insets = useSafeAreaInsets();
+  const { openDrawer } = useDrawer();
 
   const renderFriendRequest = (item: FriendInfo) => (
     <View key={item.id} className="flex-row items-center mb-4 px-4">
@@ -63,7 +65,7 @@ export default function FriendsScreen() {
       {/* Top Header */}
       <View style={{ paddingTop: insets.top ? insets.top + 10 : 12 }} className="bg-[#f3f4f6] px-4 pb-2 flex-row items-center justify-between">
         <View className="flex-row items-center">
-          <TouchableOpacity className="mr-3">
+          <TouchableOpacity className="mr-3" onPress={openDrawer}>
             <Icon name="menu" size={28} color="#1f2937" />
           </TouchableOpacity>
           <Text className="text-2xl font-bold text-gray-900">Friends</Text>
