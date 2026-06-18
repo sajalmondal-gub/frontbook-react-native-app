@@ -16,10 +16,10 @@ export default function DrawerMenu() {
 
   useEffect(() => {
     if (isOpen) {
-      translateX.value = withTiming(0, { duration: 300, easing: Easing.out(Easing.ease) });
+      translateX.value = withTiming(0, { duration: 300 });
       opacity.value = withTiming(0.5, { duration: 300 });
     } else {
-      translateX.value = withTiming(-width, { duration: 300, easing: Easing.in(Easing.ease) });
+      translateX.value = withTiming(-width, { duration: 300 });
       opacity.value = withTiming(0, { duration: 300 });
     }
   }, [isOpen]);
@@ -40,14 +40,9 @@ export default function DrawerMenu() {
     transform: [{ translateX: translateX.value }],
   }));
 
-  const animatedOverlayStyle = useAnimatedStyle(() => {
-    const isVisible = opacity.value > 0 || isOpen;
-    return {
-      opacity: opacity.value,
-      // Hide the overlay component completely when it's closed so it doesn't block touches
-      transform: [{ translateX: isVisible ? 0 : -width * 2 }],
-    };
-  });
+  const animatedOverlayStyle = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
 
   const MenuItem = ({ icon, label, color = "#4b5563" }: { icon: string, label: string, color?: string }) => (
     <TouchableOpacity className="flex-row items-center py-4 px-4 border-b border-gray-100">
