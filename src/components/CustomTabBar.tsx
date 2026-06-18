@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Feather';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useScrollContext } from '../contexts/ScrollContext';
 import { useAuth } from '../hooks/useAuth';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function CustomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   const insets = useSafeAreaInsets();
@@ -26,9 +27,6 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
           bottom: 0,
           left: 0,
           right: 0,
-          backgroundColor: 'white',
-          borderTopWidth: 1,
-          borderTopColor: '#e5e7eb',
           flexDirection: 'row',
           paddingBottom: insets.bottom > 0 ? insets.bottom : 10,
           paddingTop: 10,
@@ -37,10 +35,19 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
           shadowOffset: { width: 0, height: -2 },
           shadowOpacity: 0.1,
           shadowRadius: 4,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+          overflow: 'hidden',
         },
         animatedStyle
       ]}
     >
+      <LinearGradient 
+        colors={['#f97316', '#a855f7']} 
+        start={{ x: 0, y: 0 }} 
+        end={{ x: 1, y: 0 }} 
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} 
+      />
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -59,7 +66,7 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
 
         let iconName = '';
         if (route.name === 'Home') iconName = 'home';
-        else if (route.name === 'Reels') iconName = 'play-circle'; // Or video
+        else if (route.name === 'Reels') iconName = 'play-circle'; 
         else if (route.name === 'Friends') iconName = 'users';
         else if (route.name === 'Notifications') iconName = 'bell';
 
@@ -74,7 +81,7 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
             activeOpacity={0.7}
           >
             {route.name === 'Profile' ? (
-              <View className={`p-0.5 rounded-full ${isFocused ? 'border-2 border-[#1877f2]' : 'border-2 border-transparent'}`}>
+              <View className={`p-0.5 rounded-full ${isFocused ? 'border-2 border-white' : 'border-2 border-transparent'}`}>
                 <Image 
                   source={user?.profileImage || require('../assets/images/logo.png')} 
                   style={{ width: 26, height: 26, borderRadius: 13 }}
@@ -84,7 +91,7 @@ export default function CustomTabBar({ state, descriptors, navigation }: BottomT
               <Icon 
                 name={iconName} 
                 size={26} 
-                color={isFocused ? '#1877f2' : '#65676b'} 
+                color={isFocused ? '#ffffff' : 'rgba(255,255,255,0.6)'} 
                 style={{ 
                   fontWeight: isFocused ? 'bold' : 'normal',
                 }}
