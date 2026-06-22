@@ -46,7 +46,7 @@ export default function CreatePost() {
             <TouchableOpacity
                 className="flex-1 mx-3 h-10 rounded-full bg-purple-200/60 justify-center px-4 shadow-sm border border-gray-100"
                 activeOpacity={0.7}
-                onPress={() => console.log('Open Create Post Modal')}
+                onPress={() => navigation.navigate('CreatePostScreen' as never)}
             >
                 <Text className="text-gray-500 font-medium text-[14px]">
                     What's on your mind?

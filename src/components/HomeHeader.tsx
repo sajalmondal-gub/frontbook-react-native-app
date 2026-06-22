@@ -3,13 +3,15 @@ import { View, TouchableOpacity, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import DropdownMenu, { DropdownOption } from './DropdownMenu';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 
 export default function HomeHeader() {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const insets = useSafeAreaInsets();
+    const navigation = useNavigation();
 
     const menuOptions: DropdownOption[] = [
-        { id: 'post', label: 'Post', icon: 'edit-2', onPress: () => console.log('Post clicked') },
+        { id: 'post', label: 'Post', icon: 'edit-2', onPress: () => navigation.navigate('CreatePostScreen' as never) },
         { id: 'story', label: 'Story', icon: 'camera', onPress: () => console.log('Story clicked') },
         { id: 'reel', label: 'Reel', icon: 'video', onPress: () => console.log('Reel clicked') },
         { id: 'live', label: 'Live', icon: 'radio', onPress: () => console.log('Live clicked') },
